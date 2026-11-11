@@ -552,6 +552,14 @@ function loadSummary(){
 function parSum(g,kids){return g.s.filter(function(x){return kids.indexOf(x[0].split(' ')[0])>=0}).reduce(function(a,x){return a+x[1]},0)}
 function parHTML(g,k){var p=g.par&&g.par[k];return p?'<div class="sr"><span>'+p.l+'</span><span>'+f(parSum(g,p.kids))+'</span></div>':''}
 function parHTMLDet(g,k){var p=g.par&&g.par[k];return p?'<details class="sr par"><summary><span>'+p.l+'</span><b>'+n2(parSum(g,p.kids))+'</b></summary></details>':''}
+function legendHTML(g){
+ return g.s.map(function(x,i){
+  var k=x[0].split(' ')[0], p=g.par&&g.par[k], col=PAL[i%5];
+  if(p) return '<div class="lg"><span><i class="dot" style="background:'+col+'"></i>'+p.l+'</span><b>'+(g.v?(parSum(g,p.kids)/g.v*100):0).toFixed(1)+'%</b></div>';
+  if(isKid(g,k)) return '';
+  return '<div class="lg"><span><i class="dot" style="background:'+col+'"></i>'+NM(x[0])+'</span><b>'+(g.v?(x[1]/g.v*100):0).toFixed(1)+'%</b></div>';
+ }).join('');
+}
 function isKid(g,k){return !!(g.par&&Object.keys(g.par).some(function(pk){return g.par[pk].kids.indexOf(k)>=0}))}
 function buildG(){
  G=GCFG.map(function(g){
@@ -719,9 +727,9 @@ function det(){
  var gh='';
  G.forEach(function(g){
    var live=g.s.filter(function(x){return x[1]});
-   var pal=live.map(function(x){return {v:x[1],c:PAL[g.s.indexOf(x)%5],n:NM(x[0])}});
+   var pal=[];g.s.forEach(function(x,i){var k=x[0].split(' ')[0],p=g.par&&g.par[k];if(p){pal.push({v:parSum(g,p.kids),c:PAL[i%5],n:p.l});return}if(isKid(g,k)||!x[1])return;pal.push({v:x[1],c:PAL[i%5],n:NM(x[0])})});
    gh+='<section class="card gcard" style="border-top:5px solid var('+g.c+')"><div class="gh"><h3>'+g.sh+' · '+GN[g.sh]+'</h3><b>'+n0(g.v)+' <small>บาท</small></b></div><input class="gq" type="search" placeholder="🔍 ค้นหาในหมวดนี้" autocomplete="off">';
-   gh+='<div class="gtop"><div class="pieb">'+pieSVG(pal,g.v)+'<div class="pmid"><small>รวม</small><b>'+n0(g.v)+'</b></div></div><div class="glg">'+g.s.map(function(x,i){return '<div class="lg"><span><i class="dot" style="background:'+PAL[i%5]+'"></i>'+NM(x[0])+'</span><b>'+(g.v?(x[1]/g.v*100):0).toFixed(1)+'%</b></div>'}).join('')+'</div></div>';
+   gh+='<div class="gtop"><div class="pieb">'+pieSVG(pal,g.v)+'<div class="pmid"><small>รวม</small><b>'+n0(g.v)+'</b></div></div><div class="glg">'+legendHTML(g)+'</div></div>';
    g.s.forEach(function(x){
      var k=x[0].split(' ')[0];
      gh+=parHTMLDet(g,k);
