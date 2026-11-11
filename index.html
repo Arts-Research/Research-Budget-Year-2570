@@ -406,7 +406,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #tipbox{position:fixed;display:none;pointer-events:none;z-index:999;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);padding:6px 10px;font-size:.88rem;white-space:nowrap}
 @media print{#tipbox{display:none!important}}
 .sr.ind{padding-left:48px}
-details.sr.ind{margin-left:48px}
+details.sr.ind>summary{padding-left:48px!important}
+details.sr.par>summary::after{visibility:hidden}
+details.sr.par>summary{cursor:default}
 </style>
 </head>
 <body>
@@ -549,6 +551,7 @@ function loadSummary(){
 }
 function parSum(g,kids){return g.s.filter(function(x){return kids.indexOf(x[0].split(' ')[0])>=0}).reduce(function(a,x){return a+x[1]},0)}
 function parHTML(g,k){var p=g.par&&g.par[k];return p?'<div class="sr"><span>'+p.l+'</span><span>'+f(parSum(g,p.kids))+'</span></div>':''}
+function parHTMLDet(g,k){var p=g.par&&g.par[k];return p?'<details class="sr par"><summary><span>'+p.l+'</span><b>'+n2(parSum(g,p.kids))+'</b></summary></details>':''}
 function isKid(g,k){return !!(g.par&&Object.keys(g.par).some(function(pk){return g.par[pk].kids.indexOf(k)>=0}))}
 function buildG(){
  G=GCFG.map(function(g){
@@ -721,7 +724,7 @@ function det(){
    gh+='<div class="gtop"><div class="pieb">'+pieSVG(pal,g.v)+'<div class="pmid"><small>รวม</small><b>'+n0(g.v)+'</b></div></div><div class="glg">'+g.s.map(function(x,i){return '<div class="lg"><span><i class="dot" style="background:'+PAL[i%5]+'"></i>'+NM(x[0])+'</span><b>'+(g.v?(x[1]/g.v*100):0).toFixed(1)+'%</b></div>'}).join('')+'</div></div>';
    g.s.forEach(function(x){
      var k=x[0].split(' ')[0];
-     gh+=parHTML(g,k);
+     gh+=parHTMLDet(g,k);
      var rows=ITEMS.filter(function(t){return t[0]===k && (!x[2]||t[5]===x[2]) && (!qtxt||matchQ(t))}).sort(function(a,b){return a[3]<b[3]?-1:1});
      if(qtxt&&!rows.length)return;
      gh+='<details class="sr'+(isKid(g,k)?' ind':'')+'"'+(qtxt?' open':'')+'><summary><span>'+NM(x[0])+' <small>'+rows.length+' รายการ</small></span><b>'+n2(x[1])+'</b></summary><div class="items">'+rows.map(function(t){return '<div class="it" data-s="'+(String(t[1])+' '+String(t[4])+' '+String(t[2])+' '+(t[3]?fd(t[3]):'')).toLowerCase().replace(/"/g,'')+'"><div class="itm"><span class="d">'+fd(t[3])+'</span></div><div class="nm"><span>'+t[1]+'</span><b class="am">'+n2(t[2])+'</b></div></div>'}).join('')+'</div></details>';
