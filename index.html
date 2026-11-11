@@ -553,7 +553,7 @@ function buildG(){
    v=ITEMS.reduce(function(a,t){return a+(t[0]===code&&(!flt||t[5]===flt)?t[2]:0)},0);
    s.push([lbl,v,flt]);
   });
-  return {n:g.n,sh:g.sh,c:g.c,s:s};
+  return {n:g.n,sh:g.sh,c:g.c,hd:g.hd,s:s};
  });
 }
 function setStatus(h,warn){var e=$('st');e.className='note'+(warn?' warn':'');e.innerHTML=h}
@@ -618,7 +618,7 @@ function draw(){
 }
 var GI={"หมวด 1": "📚", "หมวด 2": "📰", "หมวด 3": "✏️", "หมวด 4": "🏅", "หมวด 8": "🧾"};
 var SI={"1.1": "🎓", "2.1.1": "🇹🇭", "2.1.2": "🌏", "3.1": "📖", "4.1": "🎁", "4.2": "💡", "4.3": "🌟", "4.4": "🎖️", "8.1": "🎪", "8.2": "🤝", "8.3": "👥", "8.4": "🛒", "8.5": "🔁"};
-function NM(l){return String(l).replace(/^[\d.]+\s+/,'')}
+function NM(l){return String(l)}  /* keep the database code (1.1, 2.1.1 ...) in front of each item name */
 function SIc(lbl){var k=lbl.split(' ')[0];return SI[k]||'•'}
 function INCI(t){return t.indexOf('กองทุน')>=0?'🏦':t.indexOf('รายรับ')===0?'💼':t.indexOf('ค่าธรรมเนียม')===0?'🪙':t.indexOf('คืนทุน')===0?'🔄':'•'}
 var PAL=['#7fd6bb','#9dd3e6','#f0cf8a','#f2b7a0','#b5dea0'],dg=null,open1=null;
