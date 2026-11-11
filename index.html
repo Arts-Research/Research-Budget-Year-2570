@@ -665,6 +665,8 @@ function monthSVG(){
 function tipTxt(name,v,tt){return name+': '+n2(v)+' บาท ('+(tt?(v/tt*100).toFixed(1):'0.0')+'%)'}
 function pieSVG(sl,tt){
  var R=90,r0=56,cx=100,cy=100,sv='<svg viewBox="0 0 200 200" class="pie">',a0=-Math.PI/2;
+ sl=sl.filter(function(x){return x.v>0});
+ if(!sl.length||!tt){return sv+'<circle cx="100" cy="100" r="90" style="fill:var(--bd)"/><circle cx="100" cy="100" r="56" style="fill:var(--card)"/></svg>'}
  if(sl.length===1){return sv+'<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" style="fill:'+sl[0].c+'" data-tip="'+tipTxt(sl[0].n||'',sl[0].v,tt)+'"></circle><circle cx="'+cx+'" cy="'+cy+'" r="'+r0+'" style="fill:var(--card)"/></svg>'}
  sl.forEach(function(x){
    var a1=a0+x.v/tt*2*Math.PI, large=(a1-a0)>Math.PI?1:0;
