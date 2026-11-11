@@ -405,6 +405,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media print{.srch,.tabs,.gq,.rfrow,.prbtn{display:none!important}}
 #tipbox{position:fixed;display:none;pointer-events:none;z-index:999;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:10px;box-shadow:var(--sh);padding:6px 10px;font-size:.88rem;white-space:nowrap}
 @media print{#tipbox{display:none!important}}
+.sr.ind{padding-left:48px}
+details.sr.ind{margin-left:48px}
 </style>
 </head>
 <body>
@@ -430,11 +432,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* ===== ข้อมูล: ดึงสดจาก Google Sheet (gviz CSV) ===== */
 var SHEET_ID='1r1eL_vn6LXHw1qYjkqXPHZ5ZR2bKb9JjCt5zSSVRMM0';
 var SUMMARY='สรุปค่าใช้จ่าย';
-var SRC={"1.1":"1.1 ทุนวิจัย","2.1.1":" 2.1.1 ในปท.","2.1.2":"2.1.2 ตปท.","3.1":"3.1 ทุนตำรา","4.1":"4.1 งรว.ตีพิมพ์","4.2":"4.2 รางวัลลิขสิทธิ์","4.3":"4.3 งรว.ผลงานวิจัย","4.4":"4.4งรว.ตน.วิชาการ","8.1":"8.1 โครงการ","8.2":"8.2 ค่าเบี้ย","8.3":"8.3 ผู้ทรงคุณวุฒิ","8.4":"8.4 อื่นๆ ","8.5":"8.5ตัดโอนงปม."};
-var SRC_ALT={"2.1.1":["2.1.1การเสนอผลงาน(นปท)"," 2.1.1 ในปท."],"2.1.2":["2.1.2การเสนอผลงาน(ตปท)","2.1.2 ตปท."]};
+var SRC={"1.1":"1.1 ทุนวิจัย","2.1":"2.1 คชจ.เผยแพร่ผลงาน","2.2.1":"2.2.1 ในปท.","2.2.2":"2.2.2 ตปท.","3.1":"3.1 ทุนตำรา","4.1":"4.1 งรว.ตีพิมพ์","4.2":"4.2 รางวัลลิขสิทธิ์","4.3":"4.3 งรว.ผลงานวิจัย","4.4":"4.4งรว.ตน.วิชาการ","8.1":"8.1 โครงการ","8.2":"8.2 ค่าเบี้ย","8.3":"8.3 ผู้ทรงคุณวุฒิ","8.4":"8.4 อื่นๆ ","8.5":"8.5ตัดโอนงปม."};
+var SRC_ALT={};
 var GCFG=[
  {n:"หมวด 1 ทุนอุดหนุนการวิจัย นวัตกรรมและการสร้างสรรค์",sh:"หมวด 1",c:"--c1",s:[["1.1 ทุนวิจัยบุคลากร","1.1","บุคลากร"],["1.1 ทุนวิจัยนักศึกษา","1.1","นักศึกษา"]]},
- {n:"หมวด 2 การเผยแพร่ นำเสนอ และแสดงผลงาน",sh:"หมวด 2",c:"--c2",s:[["2.1.1 การเสนอผลงานภายในประเทศ","2.1.1",""],["2.1.2 การเสนอผลงานวิจัยในต่างประเทศ","2.1.2",""]]},
+ {n:"หมวด 2 การเผยแพร่ นำเสนอ และแสดงผลงาน",sh:"หมวด 2",c:"--c2",par:{"2.2.1":{l:"2.2 ค่าใช้จ่ายในการเสนอผลงาน",kids:["2.2.1","2.2.2"]}},s:[["2.1 ค่าใช้จ่ายเผยแพร่ผลงาน","2.1",""],["2.2.1 การเสนอผลงานภายในประเทศ","2.2.1",""],["2.2.2 การเสนอผลงานต่างประเทศ","2.2.2",""]]},
  {n:"หมวด 3 การเขียนหรือแปลตำรา และผลงานวิชาการอื่น",sh:"หมวด 3",c:"--c3",s:[["3.1 เงินสนับสนุนการเขียนหรือแปลตำรา","3.1",""]]},
  {n:"หมวด 4 รางวัล",sh:"หมวด 4",c:"--c4",s:[["4.1 รางวัลการเผยแพร่ผลงานวิจัย นวัตกรรมและการสร้างสรรค์","4.1",""],["4.2 เงินรางวัลผลงานจดทะเบียนทรัพย์สินทางปัญญา","4.2",""],["4.3 รางวัลสำหรับบุคลากรที่ได้รับรางวัลหรือเชิดชูเกียรติ","4.3",""],["4.4 รางวัลที่ได้รับการแต่งตั้งให้ดำรงตำแหน่งทางวิชาการ","4.4",""]]},
  {n:"หมวด 8 ค่าใช้จ่ายอื่น ๆ",sh:"หมวด 8",c:"--c8",s:[["8.1 ค่าใช้จ่ายในการจัดโครงการ","8.1",""],["8.2 ค่าเบี้ยประชุมคณะอนุกรรมการส่งเสริมการวิจัย","8.2",""],["8.3 ค่าตอบแทนผู้ทรงคุณวุฒิ","8.3",""],["8.4 ค่าใช้จ่ายอื่น ๆ","8.4",""],["8.5 ค่าใช้จ่ายตัดโอนงบประมาณ","8.5",""]]}
@@ -545,6 +547,9 @@ function loadSummary(){
   return {inc:inc,sums:sums};
  });
 }
+function parSum(g,kids){return g.s.filter(function(x){return kids.indexOf(x[0].split(' ')[0])>=0}).reduce(function(a,x){return a+x[1]},0)}
+function parHTML(g,k){var p=g.par&&g.par[k];return p?'<div class="sr"><span>'+p.l+'</span><span>'+f(parSum(g,p.kids))+'</span></div>':''}
+function isKid(g,k){return !!(g.par&&Object.keys(g.par).some(function(pk){return g.par[pk].kids.indexOf(k)>=0}))}
 function buildG(){
  G=GCFG.map(function(g){
   var s=[];
@@ -553,7 +558,7 @@ function buildG(){
    v=ITEMS.reduce(function(a,t){return a+(t[0]===code&&(!flt||t[5]===flt)?t[2]:0)},0);
    s.push([lbl,v,flt]);
   });
-  return {n:g.n,sh:g.sh,c:g.c,hd:g.hd,s:s};
+  return {n:g.n,sh:g.sh,c:g.c,par:g.par,s:s};
  });
 }
 function setStatus(h,warn){var e=$('st');e.className='note'+(warn?' warn':'');e.innerHTML=h}
@@ -613,16 +618,16 @@ function draw(){
  var g=sel!==null?G[sel]:null;
  $('mid').innerHTML=g?'<span>'+g.sh+'</span><b>'+f(g.v)+'</b><span>บาท</span>':'<span>ค่าใช้จ่ายรวม</span><b>'+f(tot)+'</b><span>บาท</span>';
  $('elg').innerHTML=G.map(function(x){return '<div class="el'+(sel===G.indexOf(x)?' on':'')+'" data-i="'+G.indexOf(x)+'"><span><i class="dot" style="background:var('+x.c+')"></i>'+GI[x.sh]+' '+x.sh+' '+GN[x.sh]+'</span></div>'}).join('');
- $('list').innerHTML=G.map(function(g,i){return '<div class="g'+(sel===i?' on':'')+'" data-i="'+i+'" style="--c:var('+g.c+')"><div class="gh"><span><i class="dot"></i>'+GI[g.sh]+' '+g.n+'</span><span>'+f(g.v)+'</span></div><div class="bar"><i style="width:'+(tot?g.v/tot*100:0)+'%"></i></div>'+g.s.map(function(s){return '<div class="sr'+(s[1]?'':' z')+'"><span>'+NM(s[0])+'</span><span>'+f(s[1])+'</span></div>'}).join('')+'</div>'}).join('')+'<div class="tot"><span>รวมค่าใช้จ่ายจริงทั้งสิ้น</span><span>'+f(tot)+'</span></div>';
+ $('list').innerHTML=G.map(function(g,i){return '<div class="g'+(sel===i?' on':'')+'" data-i="'+i+'" style="--c:var('+g.c+')"><div class="gh"><span><i class="dot"></i>'+GI[g.sh]+' '+g.n+'</span><span>'+f(g.v)+'</span></div><div class="bar"><i style="width:'+(tot?g.v/tot*100:0)+'%"></i></div>'+g.s.map(function(s){var k=s[0].split(' ')[0];return parHTML(g,k)+'<div class="sr'+(isKid(g,k)?' ind':'')+(s[1]?'':' z')+'"><span>'+NM(s[0])+'</span><span>'+f(s[1])+'</span></div>'}).join('')+'</div>'}).join('')+'<div class="tot"><span>รวมค่าใช้จ่ายจริงทั้งสิ้น</span><span>'+f(tot)+'</span></div>';
  Array.prototype.forEach.call(document.querySelectorAll('#svg circle[data-i],#list .g'),function(e){e.onclick=function(){var i=+e.getAttribute('data-i');sel=sel===i?null:i;draw()}});
 }
 var GI={"หมวด 1": "📚", "หมวด 2": "📰", "หมวด 3": "✏️", "หมวด 4": "🏅", "หมวด 8": "🧾"};
-var SI={"1.1": "🎓", "2.1.1": "🇹🇭", "2.1.2": "🌏", "3.1": "📖", "4.1": "🎁", "4.2": "💡", "4.3": "🌟", "4.4": "🎖️", "8.1": "🎪", "8.2": "🤝", "8.3": "👥", "8.4": "🛒", "8.5": "🔁"};
+var SI={"1.1": "🎓", "2.1": "📣", "2.2.1": "🇹🇭", "2.2.2": "🌏", "3.1": "📖", "4.1": "🎁", "4.2": "💡", "4.3": "🌟", "4.4": "🎖️", "8.1": "🎪", "8.2": "🤝", "8.3": "👥", "8.4": "🛒", "8.5": "🔁"};
 function NM(l){return String(l)}  /* keep the database code (1.1, 2.1.1 ...) in front of each item name */
 function SIc(lbl){var k=lbl.split(' ')[0];return SI[k]||'•'}
 function INCI(t){return t.indexOf('กองทุน')>=0?'🏦':t.indexOf('รายรับ')===0?'💼':t.indexOf('ค่าธรรมเนียม')===0?'🪙':t.indexOf('คืนทุน')===0?'🔄':'•'}
 var PAL=['#7fd6bb','#9dd3e6','#f0cf8a','#f2b7a0','#b5dea0'],dg=null,open1=null;
-var SUBN={'1.1':'ทุนวิจัยรายโครงการ','2.1.1':'เสนอผลงานในประเทศ','2.1.2':'เสนอผลงานต่างประเทศ','3.1':'ทุนเขียน/แปลตำรา','4.1':'รางวัลเผยแพร่ผลงาน','4.2':'รางวัลทรัพย์สินทางปัญญา','4.3':'รางวัลบุคลากร','4.4':'รางวัลตำแหน่งวิชาการ','8.1':'จัดโครงการ','8.2':'เบี้ยประชุม','8.3':'ค่าตอบแทนผู้ทรงคุณวุฒิ','8.4':'ค่าใช้จ่ายอื่น','8.5':'ตัดโอนงบประมาณ'};
+var SUBN={'1.1':'ทุนวิจัยรายโครงการ','2.1':'เผยแพร่ผลงาน','2.2.1':'เสนอผลงานในประเทศ','2.2.2':'เสนอผลงานต่างประเทศ','3.1':'ทุนเขียน/แปลตำรา','4.1':'รางวัลเผยแพร่ผลงาน','4.2':'รางวัลทรัพย์สินทางปัญญา','4.3':'รางวัลบุคลากร','4.4':'รางวัลตำแหน่งวิชาการ','8.1':'จัดโครงการ','8.2':'เบี้ยประชุม','8.3':'ค่าตอบแทนผู้ทรงคุณวุฒิ','8.4':'ค่าใช้จ่ายอื่น','8.5':'ตัดโอนงบประมาณ'};
 var GN={'หมวด 1':'ทุนอุดหนุนการวิจัย','หมวด 2':'เผยแพร่และนำเสนอผลงาน','หมวด 3':'ตำราและผลงานวิชาการ','หมวด 4':'รางวัล','หมวด 8':'ค่าใช้จ่ายอื่น ๆ'};
 var n0=function(x){return x.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})};
 var n2=function(x){return x.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})};
@@ -702,7 +707,7 @@ function det(){
  $('dsum').innerHTML='<div class="di"><span class="ibadge" style="--c:var(--c1)">'+IC.inc+'</span><div><small>รายรับ</small><b>'+n0(inc)+' <small>บาท</small></b></div></div>'+'<div class="di"><span class="ibadge" style="--c:var(--c4)">'+IC.exp+'</span><div><small>รายจ่าย</small><b>'+n0(tot)+' <small>บาท</small></b></div></div>'+'<div class="di"><span class="ibadge" style="--c:var(--c8)">'+IC.bal+'</span><div><small>คงเหลือยกไป 2571</small><b>'+n0(inc-tot)+' <small>บาท</small></b></div></div>'+'<div class="flow" style="grid-column:1/-1;margin:12px 0 0"><i style="width:'+((inc?tot/inc*100:0))+'%;background:var(--c4)"></i><i style="width:'+(100-(inc?tot/inc*100:0))+'%;background:var(--c8)"></i></div>';
 
  var legend=G.map(function(g){return '<div class="lg"><span><i class="dot" style="background:var('+g.c+')"></i>'+g.sh+' '+GN[g.sh]+'</span><b>'+pct(g.v)+'</b></div>'}).join('');
- var subs=[];G.forEach(function(g){g.s.forEach(function(x){if(x[1]) subs.push({k:x[0].split(' ')[0],v:x[1],c:g.c})})});
+ var subs=[];G.forEach(function(g){g.s.forEach(function(x){subs.push({k:x[0].split(' ')[0],v:x[1],c:g.c})})});
  subs.sort(function(a,b){return b.v-a.v});
  var mxs=subs.length?subs[0].v:1;
  var hb=subs.map(function(x){return '<div class="hb"><span>'+x.k+' '+SUBN[x.k]+'</span><b>'+n0(x.v)+'</b><div class="t"><i style="width:'+(x.v/mxs*100)+'%;background:var('+x.c+')"></i></div></div>'}).join('');
@@ -711,14 +716,15 @@ function det(){
  var gh='';
  G.forEach(function(g){
    var live=g.s.filter(function(x){return x[1]});
-   var pal=live.map(function(x,i){return {v:x[1],c:PAL[i%5],n:NM(x[0])}});
+   var pal=live.map(function(x){return {v:x[1],c:PAL[g.s.indexOf(x)%5],n:NM(x[0])}});
    gh+='<section class="card gcard" style="border-top:5px solid var('+g.c+')"><div class="gh"><h3>'+g.sh+' · '+GN[g.sh]+'</h3><b>'+n0(g.v)+' <small>บาท</small></b></div><input class="gq" type="search" placeholder="🔍 ค้นหาในหมวดนี้" autocomplete="off">';
-   gh+='<div class="gtop"><div class="pieb">'+pieSVG(pal,g.v)+'<div class="pmid"><small>รวม</small><b>'+n0(g.v)+'</b></div></div><div class="glg">'+live.map(function(x,i){return '<div class="lg"><span><i class="dot" style="background:'+PAL[i%5]+'"></i>'+NM(x[0])+'</span><b>'+(g.v?(x[1]/g.v*100):0).toFixed(1)+'%</b></div>'}).join('')+'</div></div>';
-   live.forEach(function(x){
+   gh+='<div class="gtop"><div class="pieb">'+pieSVG(pal,g.v)+'<div class="pmid"><small>รวม</small><b>'+n0(g.v)+'</b></div></div><div class="glg">'+g.s.map(function(x,i){return '<div class="lg"><span><i class="dot" style="background:'+PAL[i%5]+'"></i>'+NM(x[0])+'</span><b>'+(g.v?(x[1]/g.v*100):0).toFixed(1)+'%</b></div>'}).join('')+'</div></div>';
+   g.s.forEach(function(x){
      var k=x[0].split(' ')[0];
+     gh+=parHTML(g,k);
      var rows=ITEMS.filter(function(t){return t[0]===k && (!x[2]||t[5]===x[2]) && (!qtxt||matchQ(t))}).sort(function(a,b){return a[3]<b[3]?-1:1});
      if(qtxt&&!rows.length)return;
-     gh+='<details class="sr"'+(qtxt?' open':'')+'><summary><span>'+NM(x[0])+' <small>'+rows.length+' รายการ</small></span><b>'+n2(x[1])+'</b></summary><div class="items">'+rows.map(function(t){return '<div class="it" data-s="'+(String(t[1])+' '+String(t[4])+' '+String(t[2])+' '+(t[3]?fd(t[3]):'')).toLowerCase().replace(/"/g,'')+'"><div class="itm"><span class="d">'+fd(t[3])+'</span></div><div class="nm"><span>'+t[1]+'</span><b class="am">'+n2(t[2])+'</b></div></div>'}).join('')+'</div></details>';
+     gh+='<details class="sr'+(isKid(g,k)?' ind':'')+'"'+(qtxt?' open':'')+'><summary><span>'+NM(x[0])+' <small>'+rows.length+' รายการ</small></span><b>'+n2(x[1])+'</b></summary><div class="items">'+rows.map(function(t){return '<div class="it" data-s="'+(String(t[1])+' '+String(t[4])+' '+String(t[2])+' '+(t[3]?fd(t[3]):'')).toLowerCase().replace(/"/g,'')+'"><div class="itm"><span class="d">'+fd(t[3])+'</span></div><div class="nm"><span>'+t[1]+'</span><b class="am">'+n2(t[2])+'</b></div></div>'}).join('')+'</div></details>';
    });
    gh+='</section>';
  });
